@@ -2,7 +2,7 @@ import { Circle, CircleCheckBig, EllipsisVertical } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import Modal from "./modal"; // Assuming Modal component handles its rendering
 
-const Todo = ({ task, updateTask }) => {
+const Todo = ({ task, updateTask, deleteTask }) => {
   const [isComplete, setIsComplete] = useState(task.isCompleted);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const modalRef = useRef(null);
@@ -40,6 +40,10 @@ const Todo = ({ task, updateTask }) => {
 
   const onBlur = () =>{
     setIsEditing(false)
+  }
+
+  const onDelete = () => {
+    deleteTask(task.id)
   }
 
   return (
@@ -87,6 +91,7 @@ const Todo = ({ task, updateTask }) => {
           fowardRef={modalRef}
           handleEdit={handleEdit}
           isEditing={isEditing}
+          onDelete={onDelete}
         />
       )}
     </div>

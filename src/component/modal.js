@@ -1,7 +1,7 @@
 import { Check, Pencil, Star, Trash } from "lucide-react";
 import React from "react";
 
-const Modal = ({ isOpen, isEditing, handleEdit }) => {
+const Modal = ({ isOpen, isEditing, handleEdit, onDelete }) => {
   const handleModalClick = event => {
     event.stopPropagation();
   };
@@ -33,7 +33,11 @@ const Modal = ({ isOpen, isEditing, handleEdit }) => {
           Mark as important
         </p>
       </div>
-      <div className="flex items-center h-12 px-4 transition-all duration-150 cursor-pointer hover:bg-background-400">
+      <div
+        role="button"
+        className="flex items-center h-12 px-4 transition-all duration-150 cursor-pointer hover:bg-background-400"
+        onClick={onDelete}
+      >
         <p className="flex justify-start gap-3 text-red-500">
           <Trash className="" />
           Delete
