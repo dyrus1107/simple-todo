@@ -1,8 +1,11 @@
 import { Pencil, Star, Trash } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { cn } from "../lib/ultil";
+import { TodoContext } from "../context/todoContext";
 
-const Modal = ({ isOpen, handleEdit, onDelete }) => {
+const Modal = ({ task, isOpen, handleEdit }) => {
+  console.log(task);
+  const { removeTask, toggleImportant } = useContext(TodoContext);
   const [transition, setTransition] = useState(false);
 
   const handleModalClick = event => {
@@ -25,11 +28,6 @@ const Modal = ({ isOpen, handleEdit, onDelete }) => {
         isOpen &&
           transition &&
           "transition-all duration-300 ease-in-out w-[50%]"
-        // isOpen && !transition && "w-full",
-        // isOpen &&
-        //   transition &&
-        //   "transition-all duration-300 ease-in-out w-[50%]",
-        // !isOpen && "w-0"
       )}
       onClick={handleModalClick}
     >
@@ -43,15 +41,30 @@ const Modal = ({ isOpen, handleEdit, onDelete }) => {
         </p>
       </div>
       <div className="flex items-center h-12 px-4 transition-all duration-150 cursor-pointer hover:bg-background-400 line-clamp-1">
-        <p className="flex justify-start gap-3 whitespace-nowrap">
-          <Star />
-          Mark as important
-        </p>
+        {!task.isImportant ? (
+          <p
+            role="button"
+            onClick={() => toggleImportant(task.id)}
+            className="flex justify-start gap-3 whitespace-nowrap"
+          >
+            <Star />
+            Mark as important
+          </p>
+        ) : (
+          <p
+            role="button"
+            onClick={() => toggleImportant(task.id)}
+            className="flex justify-start gap-3 text-yellow-400 whitespace-nowrap"
+          >
+            <Star className="fill-current" strokeWidth={0} />
+            Remove important
+          </p>
+        )}
       </div>
       <div
         role="button"
         className="flex items-center h-12 px-4 transition-all duration-150 cursor-pointer hover:bg-background-400"
-        onClick={onDelete}
+        onClick={() => removeTask(task.id)}
       >
         <p className="flex justify-start gap-3 text-red-500">
           <Trash className="" />

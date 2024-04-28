@@ -1,103 +1,69 @@
-import { Circle, CircleCheckBig, EllipsisVertical } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
-import Modal from "./modal"; // Assuming Modal component handles its rendering
-import { cn } from "../lib/ultil";
+import { Plus } from "lucide-react";
+import TodoList from "./todo-list";
+import { useContext, useState } from "react";
+import { TodoContext } from "../context/todoContext";
 
-const Todo = ({ task, updateTask, deleteTask }) => {
-  const [isComplete, setIsComplete] = useState(task.isCompleted);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
-  const modalRef = useRef(null);
+const Todo = () => {
+  const { addTask } = useContext(TodoContext);
+  const [inputValue, setInputValue] = useState("");
 
-  const handleClickOutside = event => {
-    if (modalRef.current && !modalRef.current.contains(event.target)) {
-      setIsModalOpen(false);
+  // const updateTask = (index, newValue) => {
+  //   setTaskList(prevTaskList =>
+  //     prevTaskList.map(task =>
+  //       task.id === index ? { ...task, title: newValue } : task
+  //     )
+  //   );
+  // };
+
+  const createTask = () => {
+    addTask(inputValue);
+    setInputValue("");
+  };
+
+  const handleKeyDown = e => {
+    if (e.key === "Enter") {
+      addTask(inputValue);
+      setInputValue("");
     }
   };
 
-  const handleCompleteTask = () => {
-    setIsComplete(!isComplete);
-  };
+  // const deleteTask = id => {
+  //   setTaskList(prevTaskList => prevTaskList.filter(task => task.id !== id));
+  // };
 
-  const handleModal = e => {
-    setIsModalOpen(!isModalOpen);
-  };
-
-  useEffect(() => {
-    document.addEventListener("click", handleClickOutside);
-  }, []);
-
-  const handleEdit = () => {
-    setIsEditing(!isEditing);
-    setIsModalOpen(false);
-  };
-
-  const onKeyDown = e => {
-    if (e.code === "Enter") {
-      updateTask(task.id, e.target.value);
-      setIsEditing(false);
-    }
-  };
-
-  const onBlur = () => {
-    setIsEditing(false);
-  };
-
-  const onDelete = () => {
-    deleteTask(task.id);
-  };
+  // const handleImportant = id => {
+  //   setTaskList(prev =>
+  //     prev.map(task =>
+  //       task.id === id ? { ...task, isImportant: !task.isImportant } : task
+  //     )
+  //   );
+  // };
 
   return (
-    <div className="relative flex items-center justify-start gap-2 px-4 rounded-md h-14 bg-dark-lighter">
-      {isComplete ? (
-        <CircleCheckBig
-          onClick={handleCompleteTask}
-          className="text-white cursor-pointer "
-        />
-      ) : (
-        <Circle
-          onClick={handleCompleteTask}
-          className="text-white cursor-pointer "
-        />
-      )}
-      <div
-        className={cn(
-          "w-full overflow-hidden text-xl text-left",
-          isComplete ? "text-gray-400 line-through" : "text-white"
-        )}
-        onKeyDown={onKeyDown}
-      >
-        {isEditing ? (
-          <input
-            className="w-full h-10 px-2 bg-transparent border rounded-md border-background-400 bg-background-700 outline outline-0 focus:outline-0"
-            type="text"
-            autoFocus
-            onBlur={onBlur}
-          />
-        ) : (
-          <p role="button" onClick={handleEdit} className="px-[.48rem]">
-            {task.title}
-          </p>
-        )}
+    <>
+      <div className="overflow-auto h-[80%]">
+        <TodoList />
       </div>
-      <button
-        className={`p-1 ml-auto rounded-full hover:bg-background-700 ${
-          isModalOpen ? "bg-background-700" : ""
-        }`}
-        ref={modalRef}
-        onClick={handleModal}
-      >
-        <EllipsisVertical className="text-white" />
-      </button>
-      {isModalOpen && (
-        <Modal
-          isOpen={isModalOpen}
-          fowardRef={modalRef}
-          handleEdit={handleEdit}
-          onDelete={onDelete}
-        />
-      )}
-    </div>
+      <div className="absolute bottom-0 left-0 flex items-center justify-end w-full h-20 px-4 py-8 rounded-b-3xl">
+        <div className="flex items-center justify-between w-full gap-2 mb-10 rounded-full cursor-pointer ">
+          <input
+            type="text"
+            className="w-full h-12 px-2 text-white border rounded-sm bg-dark-lighter border-background-700 outline outline-0 focus:outline-0"
+            onChange={e => {
+              setInputValue(e.target.value);
+            }}
+            onKeyDown={handleKeyDown}
+            value={inputValue}
+          />
+          <div
+            className="flex items-center justify-center w-20 h-12 rounded-sm bg-primary"
+            onClick={createTask}
+          >
+            <Plus className="w-8 h-8 font-bold text-white" />
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 
