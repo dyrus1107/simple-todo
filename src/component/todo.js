@@ -1,12 +1,13 @@
 import { Circle, CircleCheckBig, EllipsisVertical } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import Modal from "./modal"; // Assuming Modal component handles its rendering
+import { cn } from "../lib/ultil";
 
 const Todo = ({ task, updateTask, deleteTask }) => {
   const [isComplete, setIsComplete] = useState(task.isCompleted);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const modalRef = useRef(null);
   const [isEditing, setIsEditing] = useState(false);
+  const modalRef = useRef(null);
 
   const handleClickOutside = event => {
     if (modalRef.current && !modalRef.current.contains(event.target)) {
@@ -38,13 +39,13 @@ const Todo = ({ task, updateTask, deleteTask }) => {
     }
   };
 
-  const onBlur = () =>{
-    setIsEditing(false)
-  }
+  const onBlur = () => {
+    setIsEditing(false);
+  };
 
   const onDelete = () => {
-    deleteTask(task.id)
-  }
+    deleteTask(task.id);
+  };
 
   return (
     <div className="relative flex items-center justify-start gap-2 px-4 rounded-md h-14 bg-dark-lighter">
@@ -60,9 +61,10 @@ const Todo = ({ task, updateTask, deleteTask }) => {
         />
       )}
       <div
-        className={`w-full overflow-hidden text-xl text-left  ${
-          isComplete ? "text-gray-300 line-through" : "text-white"
-        }`}
+        className={cn(
+          "w-full overflow-hidden text-xl text-left",
+          isComplete ? "text-gray-400 line-through" : "text-white"
+        )}
         onKeyDown={onKeyDown}
       >
         {isEditing ? (
@@ -73,14 +75,16 @@ const Todo = ({ task, updateTask, deleteTask }) => {
             onBlur={onBlur}
           />
         ) : (
-          <p>{task.title}</p>
+          <p role="button" onClick={handleEdit} className="px-[.48rem]">
+            {task.title}
+          </p>
         )}
       </div>
       <button
         className={`p-1 ml-auto rounded-full hover:bg-background-700 ${
           isModalOpen ? "bg-background-700" : ""
         }`}
-        ref={modalRef} // Assign ref to modal container
+        ref={modalRef}
         onClick={handleModal}
       >
         <EllipsisVertical className="text-white" />
@@ -90,7 +94,6 @@ const Todo = ({ task, updateTask, deleteTask }) => {
           isOpen={isModalOpen}
           fowardRef={modalRef}
           handleEdit={handleEdit}
-          isEditing={isEditing}
           onDelete={onDelete}
         />
       )}
