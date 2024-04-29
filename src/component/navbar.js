@@ -1,10 +1,10 @@
 import { BarChart3, Info } from "lucide-react";
 import { useContext } from "react";
 import { TodoContext } from "../context/todoContext";
+import { cn } from "../lib/ultil";
 
 const Navbar = ({ changeRender }) => {
-  const { getTotalImportant } = useContext(TodoContext);
-  console.log(getTotalImportant());
+  const { getTotalImportant, isUpdate } = useContext(TodoContext);
   const handleRender = e => {
     changeRender(e);
   };
@@ -27,7 +27,9 @@ const Navbar = ({ changeRender }) => {
         <BarChart3
           role="button"
           onClick={() => handleRender("statistic")}
-          className="w-6 h-6 text-white mt-1.5 hover:text-primary"
+          className={cn("w-6 h-6 text-white mt-1.5 hover:text-primary transition-colors"
+        ,
+      isUpdate && "text-primary")}
         />
         {!!getTotalImportant() && (
           <div className="absolute flex items-center justify-center w-5 h-5 text-xs text-white rounded-full -top-1 -right-3 bg-primary">

@@ -9,6 +9,7 @@ const TodoContext = createContext({
 
 const TodoProvider = ({ children }) => {
   const [tasks, setTasks] = useState([]);
+  const [isUpdate, setIsUpdate] = useState(false);
 
   useEffect(() => {
     const storedTodos = localStorage.getItem("tasks");
@@ -52,6 +53,8 @@ const TodoProvider = ({ children }) => {
           : task
       )
     );
+    setIsUpdate(true);
+    setTimeout(() => setIsUpdate(false),240)
 
     localStorage.setItem(
       "tasks",
@@ -96,6 +99,10 @@ const TodoProvider = ({ children }) => {
     );
   };
 
+  const getTask = () => {
+    return tasks.filter(task => !task.isCompleted);
+  };
+
   const getTotal = () => {
     return tasks.length;
   };
@@ -119,16 +126,18 @@ const TodoProvider = ({ children }) => {
 
   const value = {
     tasks,
+    isUpdate,
     addTask,
     removeTask,
     toggleComplete,
     toggleImportant,
     updateTask,
+    getTask,
     getTotal,
     getImportant,
     getTotalImportant,
     getComplete,
-    deleteAll
+    deleteAll,
   };
 
   return <TodoContext.Provider value={value}>{children}</TodoContext.Provider>;

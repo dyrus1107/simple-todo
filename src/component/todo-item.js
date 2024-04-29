@@ -49,12 +49,18 @@ const TodoItem = ({ task }) => {
       {task.isCompleted ? (
         <CircleCheckBig
           onClick={() => toggleComplete(task.id)}
-          className="text-white cursor-pointer"
+          className={cn(
+            "text-white cursor-pointer",
+            task.isImportant && "text-yellow-500"
+          )}
         />
       ) : (
         <Circle
           onClick={() => toggleComplete(task.id)}
-          className="text-white cursor-pointer"
+          className={cn(
+            "text-white cursor-pointer",
+            task.isImportant && "text-yellow-500"
+          )}
         />
       )}
       <div

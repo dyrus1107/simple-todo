@@ -8,6 +8,7 @@ const Statistic = () => {
     useContext(TodoContext);
 
   const [confirmed, setConfirmed] = useState(false);
+  const [pending, setPending] = useState(false);
 
   const totalTask = getTotal();
   const totalImportant = getImportant();
@@ -21,6 +22,11 @@ const Statistic = () => {
     }
     if (confirmed) {
       deleteAll();
+      setConfirmed(false);
+      setPending(true);
+      setTimeout(() => {
+        setPending(false);
+      }, 800);
     } else {
       setConfirmed(true);
     }
@@ -46,10 +52,12 @@ const Statistic = () => {
           )}
         </div>
       </div>
-      <div className="w-full h-64 pt-3 pb-2 border rounded-lg border-dark-lighter">
+      <div className="w-full h-64 pt-3 pb-2 border-2 border-gray-500 rounded-lg bg-dark">
         <h1 className="flex items-center justify-center text-2xl font-semibold text-white">
           Important
-          <span className="ml-3 text-lg text-gray-400">0/3</span>
+          <span className="ml-3 text-lg text-gray-400">
+            {getImportant().length}/3
+          </span>
         </h1>
         <div className="flex flex-col mt-2 gap-y-2">
           {totalImportant.map(task => (
@@ -57,7 +65,7 @@ const Statistic = () => {
           ))}
         </div>
       </div>
-      <div className="w-full h-64 pt-3 pb-2 overflow-auto border rounded-lg border-dark-lighter">
+      <div className="w-full h-64 pt-3 pb-2 overflow-auto border border-gray-500 rounded-lg">
         <h1 className="flex items-center justify-center text-2xl font-semibold text-white">
           Completed
         </h1>{" "}
@@ -67,23 +75,26 @@ const Statistic = () => {
           ))}
         </div>
       </div>
-      {!confirmed && (
+      {!confirmed && !pending && (
         <div
           role="button"
-          className="flex items-center justify-center w-full h-12 gap-2 bg-red-500 hover:bg-red-400"
+          className="flex items-center justify-center w-full h-12 gap-2 bg-red-400 hover:bg-red-500"
           onClick={clearAllTasks}
         >
           <Trash2 className="w-8 h-8 text-white" />
           <p className="text-white">Clear all tasks</p>
         </div>
       )}
+      {!confirmed && pending && (
+        <div className="flex items-center justify-center w-full h-12 text-white border-2 border-white bg-dark-lighter">
+          Deleted!
+        </div>
+      )}
       {confirmed && (
-        <div
-          className="flex items-center justify-center w-full h-12"
-        >
+        <div className="flex items-center justify-center w-full h-12">
           <div
             role="button"
-            className="flex items-center justify-center w-full h-full gap-2 text-white bg-red-600 hover:bg-red-500"
+            className="flex items-center justify-center w-full h-full gap-2 text-white bg-red-400 hover:bg-red-500"
             onClick={clearAllTasks}
           >
             <Trash2 /> Delete

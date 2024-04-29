@@ -3,16 +3,16 @@ import TodoItem from "./todo-item";
 import { TodoContext } from "../context/todoContext";
 
 const TodoList = () => {
-  const { tasks } = useContext(TodoContext);
+  const { getTask } = useContext(TodoContext);
   return (
     <div className="flex flex-col gap-2 scrollbar ">
-      {!tasks.length && (
+      {!getTask().length && (
         <p className="text-lg text-neutral-400">
           Try to add new task to the list
         </p>
       )}
-      {tasks.map((task, i) => (
-        <TodoItem key={i} task={task} />
+      {getTask().map(task => (
+        <TodoItem key={task.id} task={task} />
       ))}
     </div>
   );

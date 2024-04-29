@@ -4,11 +4,24 @@ import { cn } from "../lib/ultil";
 import { TodoContext } from "../context/todoContext";
 
 const Modal = ({ task, isOpen, handleEdit, closeModal }) => {
-  const { removeTask, toggleImportant } = useContext(TodoContext);
+  const { removeTask, toggleImportant, getImportant } = useContext(TodoContext);
   const [transition, setTransition] = useState(false);
+  const [importantFull, setImportantFull] = useState(false);
 
   const handleModalClick = event => {
     event.stopPropagation();
+  };
+
+  const handleImportant = () => {
+    if (importantFull) return;
+    if (!task.isImportant && getImportant().length === 3) {
+      setImportantFull(true);
+      setTimeout(() => {
+        setImportantFull(false);
+      }, 1000);
+      return;
+    }
+    toggleImportant(task.id);
   };
 
   useEffect(() => {
@@ -39,22 +52,24 @@ const Modal = ({ task, isOpen, handleEdit, closeModal }) => {
           Edit
         </p>
       </div>
-      <div className="flex items-center h-12 px-4 transition-all duration-150 cursor-pointer hover:bg-background-400 line-clamp-1">
-        {!task.isImportant ? (
-          <p
-            role="button"
-            onClick={() => toggleImportant(task.id)}
-            className="flex justify-start gap-3 whitespace-nowrap"
-          >
+      <div
+        className="flex items-center h-12 px-4 transition-all duration-150 cursor-pointer hover:bg-background-400 line-clamp-1"
+        onClick={() => handleImportant(task.id)}
+        role="button"
+        disable={importantFull}
+      >
+        {importantFull ? (
+          <p className="flex justify-start w-full gap-3 text-red-400 whitespace-nowrap">
+            <Star />
+            Max 3 important tasks
+          </p>
+        ) : !task.isImportant ? (
+          <p className="flex justify-start w-full gap-3 whitespace-nowrap">
             <Star />
             Mark as important
           </p>
         ) : (
-          <p
-            role="button"
-            onClick={() => toggleImportant(task.id)}
-            className="flex justify-start gap-3 text-yellow-400 whitespace-nowrap"
-          >
+          <p className="flex justify-start gap-3 text-yellow-400 whitespace-nowrap">
             <Star className="fill-current" strokeWidth={0} />
             Remove important
           </p>
