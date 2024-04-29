@@ -8,7 +8,7 @@ const StatisticItem = ({ task }) => {
     useContext(TodoContext);
 
   return (
-    <div className="flex items-center justify-start w-full gap-2 px-2 text-white rounded-sm bg-dark-800 h-14">
+    <div className="flex items-center justify-start w-full gap-2 px-2 text-white rounded-lg bg-dark-800 h-14">
       {task.isCompleted ? (
         <CircleCheckBig
           className="w-6 h-6 cursor-pointer"

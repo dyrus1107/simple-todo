@@ -52,7 +52,7 @@ const Statistic = () => {
           )}
         </div>
       </div>
-      <div className="w-full h-64 pt-3 pb-2 border-2 border-gray-500 rounded-lg bg-dark">
+      <div className="w-full h-64 px-2 pt-3 pb-2 border-2 border-gray-500 rounded-lg bg-dark">
         <h1 className="flex items-center justify-center text-2xl font-semibold text-white">
           Important
           <span className="ml-3 text-lg text-gray-400">
@@ -65,10 +65,13 @@ const Statistic = () => {
           ))}
         </div>
       </div>
-      <div className="w-full h-64 pt-3 pb-2 overflow-auto border border-gray-500 rounded-lg">
+      <div className="w-full h-64 px-2 pt-3 pb-2 overflow-auto border-2 border-gray-500 rounded-lg">
         <h1 className="flex items-center justify-center text-2xl font-semibold text-white">
           Completed
-        </h1>{" "}
+          <span className="ml-2 text-lg text-gray-400">
+            {getComplete().length}
+          </span>
+        </h1>
         <div className="flex flex-col mt-2 overflow-auto gap-y-2">
           {completeTasks.map(task => (
             <StatisticItem key={task.id} task={task} />
