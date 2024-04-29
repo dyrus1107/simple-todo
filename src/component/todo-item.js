@@ -5,8 +5,7 @@ import { cn } from "../lib/ultil";
 import { TodoContext } from "../context/todoContext";
 
 const TodoItem = ({ task }) => {
-  const { toggleComplete, toggleImportant, removeTask, updateTask } =
-    useContext(TodoContext);
+  const { toggleComplete, updateTask } = useContext(TodoContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const modalRef = useRef(null);
@@ -25,11 +24,6 @@ const TodoItem = ({ task }) => {
     document.addEventListener("click", handleClickOutside);
   }, []);
 
-  const onImportant = () => {
-    toggleImportant(task.id);
-    setIsModalOpen(false);
-  };
-
   const handleEdit = () => {
     setIsEditing(!isEditing);
     setIsModalOpen(false);
@@ -44,11 +38,6 @@ const TodoItem = ({ task }) => {
 
   const onBlur = () => {
     setIsEditing(false);
-  };
-
-  const onDelete = () => {
-    removeTask(task.id);
-    setIsModalOpen(false);
   };
 
   return (
@@ -95,7 +84,7 @@ const TodoItem = ({ task }) => {
       </button>
       {isModalOpen && (
         <Modal
-        task={task}
+          task={task}
           fowardRef={modalRef}
           isImportant={task.isImportant}
           isOpen={isModalOpen}

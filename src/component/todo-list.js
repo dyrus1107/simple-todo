@@ -5,7 +5,7 @@ import { TodoContext } from "../context/todoContext";
 const TodoList = () => {
   const { tasks } = useContext(TodoContext);
   return (
-    <div className="flex flex-col gap-2 ">
+    <div className="flex flex-col gap-2 scrollbar ">
       {!tasks.length && (
         <p className="text-lg text-neutral-400">
           Try to add new task to the list

@@ -7,14 +7,6 @@ const Todo = () => {
   const { addTask } = useContext(TodoContext);
   const [inputValue, setInputValue] = useState("");
 
-  // const updateTask = (index, newValue) => {
-  //   setTaskList(prevTaskList =>
-  //     prevTaskList.map(task =>
-  //       task.id === index ? { ...task, title: newValue } : task
-  //     )
-  //   );
-  // };
-
   const createTask = () => {
     addTask(inputValue);
     setInputValue("");
@@ -26,18 +18,6 @@ const Todo = () => {
       setInputValue("");
     }
   };
-
-  // const deleteTask = id => {
-  //   setTaskList(prevTaskList => prevTaskList.filter(task => task.id !== id));
-  // };
-
-  // const handleImportant = id => {
-  //   setTaskList(prev =>
-  //     prev.map(task =>
-  //       task.id === id ? { ...task, isImportant: !task.isImportant } : task
-  //     )
-  //   );
-  // };
 
   return (
     <>
