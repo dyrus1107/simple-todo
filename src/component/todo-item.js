@@ -40,6 +40,10 @@ const TodoItem = ({ task }) => {
     setIsEditing(false);
   };
 
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <div className="relative flex items-center justify-start gap-2 px-4 rounded-md h-14 bg-dark-lighter">
       {task.isCompleted ? (
@@ -89,6 +93,7 @@ const TodoItem = ({ task }) => {
           isImportant={task.isImportant}
           isOpen={isModalOpen}
           handleEdit={handleEdit}
+          closeModal={closeModal}
         />
       )}
     </div>

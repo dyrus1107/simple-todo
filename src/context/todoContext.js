@@ -11,8 +11,8 @@ const TodoProvider = ({ children }) => {
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
-    // Load data from local storage on component mount
     const storedTodos = localStorage.getItem("tasks");
+    console.log(storedTodos);
     if (storedTodos) {
       try {
         setTasks(JSON.parse(storedTodos));
@@ -47,7 +47,9 @@ const TodoProvider = ({ children }) => {
   const toggleComplete = id => {
     setTasks(prev =>
       prev.map(task =>
-        task.id === id ? { ...task, isCompleted: !task.isCompleted } : task
+        task.id === id
+          ? { ...task, isCompleted: !task.isCompleted, isImportant: false }
+          : task
       )
     );
 
@@ -84,7 +86,6 @@ const TodoProvider = ({ children }) => {
         task.id === index ? { ...task, title: newValue } : task
       )
     );
-
     localStorage.setItem(
       "tasks",
       JSON.stringify(
@@ -95,6 +96,27 @@ const TodoProvider = ({ children }) => {
     );
   };
 
+  const getTotal = () => {
+    return tasks.length;
+  };
+
+  const getTotalImportant = () => {
+    return tasks.filter(task => !!task.isImportant).length;
+  };
+
+  const getImportant = () => {
+    return tasks.filter(task => !!task.isImportant);
+  };
+
+  const getComplete = () => {
+    return tasks.filter(task => !!task.isCompleted);
+  };
+
+  const deleteAll = () => {
+    setTasks([]);
+    localStorage.removeItem("tasks");
+  };
+
   const value = {
     tasks,
     addTask,
@@ -102,6 +124,11 @@ const TodoProvider = ({ children }) => {
     toggleComplete,
     toggleImportant,
     updateTask,
+    getTotal,
+    getImportant,
+    getTotalImportant,
+    getComplete,
+    deleteAll
   };
 
   return <TodoContext.Provider value={value}>{children}</TodoContext.Provider>;

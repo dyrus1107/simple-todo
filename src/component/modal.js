@@ -3,8 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { cn } from "../lib/ultil";
 import { TodoContext } from "../context/todoContext";
 
-const Modal = ({ task, isOpen, handleEdit }) => {
-  console.log(task);
+const Modal = ({ task, isOpen, handleEdit, closeModal }) => {
   const { removeTask, toggleImportant } = useContext(TodoContext);
   const [transition, setTransition] = useState(false);
 
@@ -64,7 +63,10 @@ const Modal = ({ task, isOpen, handleEdit }) => {
       <div
         role="button"
         className="flex items-center h-12 px-4 transition-all duration-150 cursor-pointer hover:bg-background-400"
-        onClick={() => removeTask(task.id)}
+        onClick={() => {
+          removeTask(task.id);
+          closeModal();
+        }}
       >
         <p className="flex justify-start gap-3 text-red-500">
           <Trash className="" />
