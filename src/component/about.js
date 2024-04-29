@@ -2,7 +2,7 @@ import { Github } from "lucide-react";
 
 const About = () => {
   return (
-    <div className="mt-4">
+    <div className="py-8">
       <div className="w-full px-4 py-5 rounded-lg grow bg-dark-lighter">
         <h1 className="mb-2 text-2xl font-bold text-white ">This project</h1>
         <p className="text-lg leading-normal text-left text-white">
